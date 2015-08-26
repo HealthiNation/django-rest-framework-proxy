@@ -61,8 +61,9 @@ class ProxyView(BaseProxyView):
 
     def get_request_files(self, request):
         files = {}
-        if request.files:
-            for field, content in request.files.items():
+        rqf = request.FILES if request.FILES else request.files
+        if rqf:
+            for field, content in rqf.items():
                 files[field] = content
         return files
 
