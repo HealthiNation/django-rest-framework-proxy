@@ -45,8 +45,9 @@ class ProxyView(BaseProxyView):
         return host
 
     def get_request_params(self, request):
-        if request.QUERY_PARAMS:
-            qp = request.QUERY_PARAMS.copy()
+        rqp = request.QUERY_PARAMS if request.QUERY_PARAMS else request.query_params
+        if rqp:
+            qp = rqp.copy()
             for param in self.proxy_settings.DISALLOWED_PARAMS:
                 if param in qp:
                     del qp[param]
@@ -62,8 +63,9 @@ class ProxyView(BaseProxyView):
 
     def get_request_files(self, request):
         files = {}
-        if request.FILES:
-            for field, content in request.FILES.items():
+        rqf = request.FILES if request.FILES else request.files
+        if rqf:
+            for field, content in rqf.items():
                 files[field] = content
         return files
 
